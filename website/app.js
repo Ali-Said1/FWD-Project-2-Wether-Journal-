@@ -60,7 +60,7 @@ const getWeather = async (baseURL, zip, key) => {
     const request = await fetch('/userData')
   try{
   const allData = await request.json();
-  document.getElementById('date').innerHTML = `Date: ${new Date(allData.temp * 1000)}`;
+  document.getElementById('date').innerHTML = `Date: ${new Date(allData.date * 1000)}`;
   document.getElementById('temp').innerHTML = `Temperature: ${allData.temp}`;
   document.getElementById('content').innerHTML = `I feel: ${allData.feelings}`;
   }catch(e){
