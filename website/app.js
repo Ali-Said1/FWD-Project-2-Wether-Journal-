@@ -1,5 +1,4 @@
 /* Global Variables */
-
 const feelings = document.getElementById("feelings");
 const date = document.getElementById("date");
 const temp = document.getElementById("temp");
@@ -30,15 +29,20 @@ const postData = async (url = "", data = {}) => {
 //the base url value
 const baseUrl = "https://api.openweathermap.org/data/2.5/weather?zip=";
 //My api key to retrieve data
-const apiKey = "&APPID=fde9547c246ddfd9143ba378e5502b9c";
+const apiKey = "&APPID=fde9547c246ddfd9143ba378e5502b9c&units=metric";
 
 document.getElementById("generate").addEventListener("click", Requesting);
 
 function Requesting() {
   const zipCode = document.getElementById("zip").value;
-  getWeather(baseUrl, zipCode, apiKey);
-
-
+  getWeather(baseUrl, zipCode, apiKey)
+  .then(data => postData('/userData',
+  {
+  temp: data.main.temp,
+  date: data.dt,
+  feelings: feelings.value
+  }).then(updateUI())
+  )
 }
 
 const getWeather = async (baseURL, zip, key) => {
@@ -47,35 +51,21 @@ const getWeather = async (baseURL, zip, key) => {
     //transform data to JSON
     const data = await res.json();
     console.log(data);
-    //setting the date value
-    const d = data.dt;
-
-    // setting temperature value
-    const temperature = parseFloat(data.main.temp) - 273.15;
-
-    postData("/userData", { temperature, d, feelings: feelings.value });
-    getuserData();
-
+    return data;
   } catch (e) {
     //handling the error
     console.log("error", e);
   }
 };
-const getuserData = async () => {
-  const res = await fetch('/userData');
-  try {
-    //transform data to JSON
-    const retrievedData = await res.json();
-    //add Retrieved data to the divs
-    //date div
-
-    date.textContent = `Date: ${new Date(retrievedData.d * 1000)}`;
-    //Temp div
-    temp.textContent = `Temperature: ${retrievedData.temperature.toFixed(2)}`;
-    //feelings div
-    content.textContent = retrievedData.feelings;
-    //handling the error
-  } catch (e) {
-    console.log("error", e);
+  const updateUI = async () => {
+    const request = await fetch('/userData')
+  try{
+  const allData = await request.json();
+  console.log(allData)
+  document.getElementById('date').innerHTML = `Date: ${new Date(allData.temp * 1000)}`;
+  document.getElementById('temp').innerHTML = `Temperature: ${allData.temp}`;
+  document.getElementById('content').innerHTML = `I feel: ${allData.feelings}`;
+  }catch(e){
+    console.log('error',e);
   }
-};
+  };

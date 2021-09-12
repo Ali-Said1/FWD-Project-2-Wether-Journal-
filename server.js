@@ -1,5 +1,5 @@
 // Setup empty JS object to act as endpoint for all routes
-const projectData = [];
+const projectData = {};
 let dataIncrementer = 1;
 
 // Require Express to run server and routes
@@ -29,11 +29,21 @@ const server = app.listen(port, () => console.log(`Server working on port ${port
 // Post to add data to the projectData object
 
 app.post('/userData', (req, res) => {
-    projectData.push(req.body);
+    let data = req.body;
+    console.log("server side Data: ", data);
+
+    //  getting date
+    projectData["date"] = data.date;
+    //  getting temperature
+    projectData["temp"] = data.temp;
+    //  getting feelings
+    projectData["feelings"] = data.feelings;
+
 });
 
 app.get('/userData', sendBack);
 
 function sendBack(req, res) {
-    res.send(projectData[projectData.length - 1]);
+    //sends project data on get request
+    res.send(projectData);
 };

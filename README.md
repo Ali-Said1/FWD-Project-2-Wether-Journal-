@@ -26,6 +26,6 @@ Navigate to the folder in the terminal, then you should run the server in a node
 ```
 node server.js
 ```
-the server will run on the localhost on port 3030 you can access it through this [link](localhost:3030).
+the server will run on the localhost on port 3030 you can access it through this [link](https://localhost:3030).
 ### author 
 ***Ali Said***
