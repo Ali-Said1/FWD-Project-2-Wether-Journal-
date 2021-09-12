@@ -50,7 +50,6 @@ const getWeather = async (baseURL, zip, key) => {
   try {
     //transform data to JSON
     const data = await res.json();
-    console.log(data);
     return data;
   } catch (e) {
     //handling the error
@@ -61,7 +60,6 @@ const getWeather = async (baseURL, zip, key) => {
     const request = await fetch('/userData')
   try{
   const allData = await request.json();
-  console.log(allData)
   document.getElementById('date').innerHTML = `Date: ${new Date(allData.temp * 1000)}`;
   document.getElementById('temp').innerHTML = `Temperature: ${allData.temp}`;
   document.getElementById('content').innerHTML = `I feel: ${allData.feelings}`;
